@@ -1,0 +1,30 @@
+<%- include('templates/header')-%>
+<h1 class="mb-3 text-center"><%= title %> </h1>
+<a href="/dashboard/addberita" class="btn btn-outline-primary mb-3">Tambah Berita Baru</a>
+    <table class="table">
+        <thead>
+          <tr class="table-dark">
+            <th scope="col">No</th>
+            <th scope="col">judul Berita</th>
+            <th scope="col">Image</th>
+            <th scope="col">Artikel</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%// products.forEach(function(item){ %> 
+          <tr>
+            <th  scope="row"><%=// item.id %> </th>
+            <td><%= //item.nama_product %> </td>
+            <td><%=// item.quantity %> </td>
+            <td><%= //item.harga %> </td>
+            <td>
+              <a href="/detail/<%=//item.id%>" class="btn btn-outline-primary">Detail</a>
+              &nbsp;<a href="/editproduct/<%=//item.id%>" class="btn btn-outline-warning">Edit</a>
+              &nbsp;<a href="/deleteproduct/<%=//item.id%>" class="btn btn-outline-danger" onclick="return confirm('yakin Anda Menghapus <%=// item.nama_product %>?')">delete</a>
+            </td>
+          </tr>
+         <% //}); %> 
+        </tbody>
+      </table>
+<%- include('templates/footer')-%>

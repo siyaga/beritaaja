@@ -1,0 +1,19 @@
+<%- include('templates/header')-%>
+<h1 class="mb-3 text-center"><%= title %> </h1>
+<div class="row">
+  <div class="col-md-4 mb-3">
+      <div class="card">
+          <img class="card-img-top" src="https://source.unsplash.com/500x400?{{ $post->Category->name }}" alt="{{ $post->Category->name }}">
+          <div class="card-body">
+            <h5 class="card-title">judul</h5>
+            <p>
+              <small class="text-muted">
+                  By. <a href="/#" class="text-decoration-none">Adi Riyanto</a> </p></small>
+            <p class="card-text">text singkat</p>
+            <a href="/judul/" class="btn btn-primary">Read More</a>
+          </div>
+        </div>
+  </div>
+  
+</div>
+<%- include('templates/footer')-%>
