@@ -80,7 +80,7 @@ router.post('/komentar', function (req, res, next) {
   }
   Komentars.create(komentar)
     .then(data => {
-      res.redirect('/dashboard');
+      res.redirect(`/berita/${req.body.idberita}`);
     })
     .catch(err => {
       res.json({
