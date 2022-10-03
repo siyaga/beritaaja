@@ -6,25 +6,39 @@
           <tr class="table-dark">
             <th scope="col">No</th>
             <th scope="col">judul Berita</th>
+            <th scope="col">Penulis</th>
             <th scope="col">Image</th>
             <th scope="col">Artikel</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <%// products.forEach(function(item){ %> 
+          <% let i = 1;  %> 
+          <% beritas.forEach(function(item){ %> 
           <tr>
-            <th  scope="row"><%=// item.id %> </th>
-            <td><%= //item.nama_product %> </td>
-            <td><%=// item.quantity %> </td>
-            <td><%= //item.harga %> </td>
+           
+            <th  scope="row"><%= i++ %> </th>
+            <td><p style="
+              display:inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 30ch;"><%=item.judul %></p></td>
+            <td><%= item.author %> </td>
+            <td><img src="../images/<%= item.image %>" width="70"> </td>
+            <td ><p style="
+              display:inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 30ch;"><%=item.artikel %></p> </td>
             <td>
-              <a href="/judul/<%=//item.id%>" class="btn btn-outline-primary">Detail</a>
-              &nbsp;<a href="/editproduct/<%=//item.id%>" class="btn btn-outline-warning">Edit</a>
-              &nbsp;<a href="/deleteproduct/<%=//item.id%>" class="btn btn-outline-danger" onclick="return confirm('yakin Anda Menghapus <%=// item.nama_product %>?')">delete</a>
+              <a href="/berita/<%= item.id %>" class="btn btn-outline-primary">Detail</a>
+              &nbsp;<a href="/dashboard/editberita/<%= item.id%>" class="btn btn-outline-warning">Edit</a>
+              &nbsp;<a href="/dashboard/deleteberita/<%= item.id%>" class="btn btn-outline-danger" onclick="return confirm('yakin Anda Menghapus <%= item.judul %>?')">delete</a>
             </td>
           </tr>
-         <% //}); %> 
+         <% }); %> 
         </tbody>
       </table>
 <%- include('templates/footer')-%>

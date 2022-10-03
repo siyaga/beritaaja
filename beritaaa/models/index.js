@@ -19,7 +19,11 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 // tabelnya
 db.beritas = require('./berita')(sequelize, Sequelize);
+db.komentars = require('./komentar')(sequelize, Sequelize);
 db.users = require('./user')(sequelize, Sequelize);
+
+db.komentars.belongsTo(db.beritas,{foreignKey:'idberita'});
+db.beritas.hasMany(db.komentars)
 
 
 module.exports = db;

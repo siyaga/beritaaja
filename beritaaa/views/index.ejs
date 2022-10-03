@@ -1,19 +1,32 @@
 <%- include('templates/header')-%>
 <h1 class="mb-3 text-center"><%= title %> </h1>
 <div class="row">
+  <% beritas.forEach(function(item){ %> 
   <div class="col-md-4 mb-3">
       <div class="card">
-          <img class="card-img-top" src="https://source.unsplash.com/500x400?{{ $post->Category->name }}" alt="{{ $post->Category->name }}">
+       
+
+          <img class="img-fluid" src="../images/<%= item.image %>" alt="<%=item.judul %>" >
+
           <div class="card-body">
-            <h5 class="card-title">judul</h5>
+            <h5 class="card-title"><%=item.judul %></h5>
             <p>
               <small class="text-muted">
-                  By. <a href="/#" class="text-decoration-none">Adi Riyanto</a> </p></small>
-            <p class="card-text">text singkat</p>
-            <a href="/judul/" class="btn btn-primary">Read More</a>
+                  Penulis : <%=item.author %></p></small>
+            <p class="card-text" style="
+            display:inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 40ch;"><%=item.artikel %></p>
+            <br>
+            <a href="/berita/<%= item.id %> " class="btn btn-primary">Read More</a>
           </div>
+
+       
         </div>
   </div>
   
+  <% }); %> 
 </div>
 <%- include('templates/footer')-%>

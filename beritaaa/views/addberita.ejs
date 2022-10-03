@@ -11,20 +11,32 @@
             class="form-control"
             id="judul"
             placeholder="Judul Berita"
+            required
           />
         </div>
         <div class="mb-3">
-          <label for="image" class="form-label">Gambar</label>
-          <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="image" name="image">
+          <label for="author" class="form-label">Nama Penulis Berita</label>
+          <input
+            type="text"
+            name="author"
+            class="form-control"
+            id="author"
+            placeholder="Author"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Image</label>
+          <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="image" name="image" required>
         </div>
         <div class="mb-3">
             <label for="artikel" class="form-label">Artikel</label>
             <textarea
               name="artikel"
-              step="0.01"
               class="form-control"
               id="artikel"
               placeholder="Artikel"
+              required
             ></textarea>
           </div>
         <button type="submit" class="btn btn-primary">Submit</button>

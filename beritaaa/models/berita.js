@@ -1,21 +1,21 @@
 module.exports = (sequelize, Sequelize) => {
     const Berita = sequelize.define("berita", {
         judul: {
+            type: Sequelize.TEXT
+        },
+        author: {
             type: Sequelize.STRING
         },
         image: {
             type: Sequelize.STRING
         },
         artikel: {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         }
+    }, {
         
-        // ,
-        // created: {
-        //     type: Sequelize.DATE
-
-        // }
+        paranoid:true,
+        deleteAt: 'destroyTime'
     });
-
     return Berita;
 };

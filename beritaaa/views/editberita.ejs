@@ -1,0 +1,62 @@
+<%- include('templates/header')-%>
+<div class="container">
+  <h1><%= title %></h1>
+  <br />
+  <form
+    method="POST"
+    action="/dashboard/editberita/<%= beritas.id %>"
+    class="mt-4"
+    enctype="multipart/form-data"
+  >
+    <div class="mb-3">
+      <label for="judul" class="form-label">Judul Berita</label>
+      <input
+        type="text"
+        name="judul"
+        class="form-control"
+        id="judul"
+        placeholder="Judul Berita"
+        value="<%= beritas.judul %>"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="author" class="form-label">Nama Penulis Berita</label>
+      <input
+        type="text"
+        name="author"
+        class="form-control"
+        id="author"
+        placeholder="Author"
+        value="<%= beritas.author %>"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input
+        type="file"
+        accept="image/png, image/jpeg, image/jpg"
+        class="form-control"
+        id="image"
+        name="image"
+        value="<%= beritas.image %>"
+
+      />
+    </div>
+    <div class="mb-3">
+      <label for="artikel" class="form-label">Artikel</label>
+      <textarea
+        name="artikel"
+        class="form-control"
+        id="artikel"
+        placeholder="Artikel"
+        required
+      >
+<%= beritas.artikel %> </textarea
+      >
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<%- include('templates/footer')-%>

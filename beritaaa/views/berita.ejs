@@ -1,20 +1,79 @@
 <%- include('templates/header')-%>
     <div class="row justify-content-center mb-5">
-        <div class="col-md-8">
-            <h2 class="mb-3">Judul</h2>
+        <div class="col-md-8" >
+            <h2 class="mb-3"><%= beritas.judul %> </h2>
     
-            <p>By. <a href="/#" class="text-decoration-none">Adi Riyanto</a></p>
-
-            <img class="card-img-top" src="https://source.unsplash.com/1200x400?sport" alt="sport" class="img-fluid">
-
-            <article class="my-3 fs-5">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis cumque at adipisci amet voluptatibus tenetur sit. Laborum asperiores neque blanditiis porro iusto quasi, numquam quas sed eos, odio reprehenderit atque labore dolorum illum illo aliquid consectetur at earum in qui sint? Cumque ratione illo doloremque iusto aspernatur? Maxime, ipsam commodi eos voluptatum dolores asperiores exercitationem nobis omnis porro deserunt quae dolorem laboriosam eum reprehenderit vel facilis aliquam, animi dolore eaque facere. Voluptas optio nobis perspiciatis eveniet doloremque suscipit maxime inventore cupiditate a asperiores labore excepturi, ipsa corrupti dolore enim impedit tenetur provident veniam quis sunt velit. In quas non necessitatibus.
-
+            <p>Penulis : <%= beritas.author %> </a></p>
+            <div style="max-height:350px; overflow:hidden;">
+                <img class="img-fluid " src="../images/<%= beritas.image %>" alt="<%=beritas.judul %>" >
+ 
+            </div>
+            
+            <article class="my-3 fs-5" >
+            <%= beritas.artikel %> 
             </article>
 
             
             <a href="/" class="d-block mt-3">Back to berita</a>
+            <div class="card mt-3 p-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Recent Comments</h4>
+                        <h6 class="card-subtitle">Latest Comments section by users</h6>
+                    </div>
+                    <%// for(const comment of comments){%>
+                    <%= //for (const komentars of komentar){ %>     
+                    <div class="comment-widgets m-b-20 ">
+                        <div class="d-flex flex-row comment-row">
+                            <div class="p-2"><span class="round"><img src="../images/default.png" alt="user" width="50"></span>
+                            </div>
+                            <div class="comment-text w-100">
+                                <h5><%=// comment.username %><%=// komentar.username %>ADi </h5>
+                                <div class="comment-footer">
+                                    <span class="date">20 Desember 2022<%=// moment(comment.date).format('yyyy-MM-DD') %>,
+                                        <%//= moment(comment.time).format('HH:MM') %></span>
+                                   
+                                  
+                                </div>
+                                
+                                <p class="m-b-5 m-t-10"><%=// komentar.komentar %>test  <%=// comment.comment %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <%=// } %> 
+                    
+                    
 
+                </div>
+                    
+            </div>
+
+        <div class="card mt-3 p-4">
+            <form method="POST" action="/komentar">
+                <div class="mb-3 ">
+                  <input type="hidden" name="idberita" value="<%= beritas.id %>">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    class="form-control"
+                    id="username"
+                    placeholder="Username"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="komentar" class="form-label">Komentar anda : </label>
+                  <textarea
+                  type="komentar"
+                  name="komentar"
+                  class="form-control"
+                  id="komentar"
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                
+              </form>
+        </div>
         </div>
     </div>
 <%- include('templates/footer')-%>
