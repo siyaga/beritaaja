@@ -1,0 +1,52 @@
+<%- include('templates/header')-%>
+    <div class="container">
+      <h1><%= title %></h1>
+      <br />
+      <form method="POST" action="/register">
+        <div class="mb-3">
+          <label for="nama" class="form-label">Nama</label>
+          <input
+            type="text"
+            name="nama"
+            class="form-control"
+            id="nama"
+            placeholder="Nama Product"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+          type="email"
+          name="email"
+          class="form-control"
+          id="email"
+          placeholder="Email"
+          />
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              name="username"
+              class="form-control"
+              id="username"
+              placeholder="Username"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+            />
+          </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-3 mt-3">
+            <a href="/users/login" class="btn btn-warning">Back</a>    
+            </div>
+      </form>
+    </div>
+    <%- include('templates/footer')-%>

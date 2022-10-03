@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const multer = require('multer');
 var bcrypt = require('bcrypt');
-// const auth = require('../auth');
+const auth = require('../auth');
 
 
 
@@ -47,11 +47,11 @@ router.get('/', function (req, res, next) {
 router.get('/berita/:id', function (req, res, next) {
   const id = req.params.id;
   Beritas.findByPk(id)
-  .then(detailProduct => {
+  .then( async detailProduct => {
       if(detailProduct){
         res.render('berita', {
           title: 'Judul Berita',
-          beritas: detailProduct,
+          beritas: await detailProduct,
           komentars: 
           Komentars.findAll({where:{idberita:id}})
         });
@@ -115,7 +115,7 @@ router.get('/deleteberita/:id', function (req, res, next) {
 });
 
 // setting dashboard
-router.get('/dashboard/', function (req, res, next) {
+router.get('/dashboard/',auth, function (req, res, next) {
   Beritas.findAll()
   .then(beritas => {
     res.render('dashboard', 
@@ -255,6 +255,72 @@ router.get('/dashboard/deleteberita/:id', function (req, res, next) {
     });
   })
 
+});
+
+router.get('/register', function(req, res, next) {
+  res.render('register', { title: 'Register User' });
+})
+
+
+
+// create Products
+router.post('/register', function(req, res, next) {
+  let passwordHash = bcrypt.hashSync(req.body.password,10);
+  let user = {
+       nama: req.body.nama,
+       email: req.body.email,
+       username: req.body.username,
+       password: passwordHash
+  }
+  Users.create(user)
+  .then(data => {
+     res.redirect('/login');
+  })
+  .catch(err => {
+      res.json({
+          info:"Error",
+          message: err.message
+      });
+  })
+
+});
+
+/* GET users listing. */
+router.get('/login', function(req, res, next) {
+  res.render('login', { title: 'Login User' });
+});
+
+// create Products
+router.post('/login', function(req, res, next) {
+
+  Users.findOne({ where: { username: req.body.username } })
+  .then(data => {
+    if(data){
+      var loginValid = bcrypt.compareSync(req.body.password, data.password);
+      console.log(loginValid);
+      if(loginValid){
+        req.session.username = req.body.username;
+        req.session.islogin = true;
+      res.redirect('/dashboard');
+      }else {
+        res.redirect('/login');
+      }
+
+    }else {
+      res.redirect('/login');
+    }
+ })
+ .catch(err => {
+  res.redirect('/login');
+ })
+ 
+
+});
+
+/* GET users listing. */
+router.get('/logout', function(req, res, next) {
+  req.session.destroy();
+  res.redirect('/login');
 });
 
 
