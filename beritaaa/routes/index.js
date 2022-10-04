@@ -3,7 +3,9 @@ var router = express.Router();
 const multer = require('multer');
 var bcrypt = require('bcrypt');
 const auth = require('../auth');
+const notauth = require('../notauth');
 const moment = require('moment');
+const { body,check, validationResult } = require('express-validator');
 
 
 
@@ -31,16 +33,20 @@ const Users = db.users;
 const Op = db.Sequelize.Op;
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  
+  username = req.session.username;
   Beritas.findAll()
   .then(beritas => {
     res.render('index', {
       title: 'Berita Terkini',
-      beritas: beritas
+      beritas: beritas,
+      username: username,
+      moment : moment,
     });
   })
   .catch(err=> {
     res.render('index', { 
-      title: 'Berita Terkini',
+      title: 'Berita Terkini'
     });
   });
   
@@ -49,10 +55,9 @@ router.get('/', function (req, res, next) {
 // find berita
 router.get('/berita/:id',async function (req, res, next) {
   const id = req.params.id;
+  
+  username = req.session.username;
   const komentarsss = await Komentars.findAll({where:{idberita:id}});
-  komentarsss.forEach(function (komen){
-    console.log(komen.idberita);
-  })
   await Beritas.findByPk(id)
   .then( detailProduct => {
       if(detailProduct){
@@ -60,7 +65,8 @@ router.get('/berita/:id',async function (req, res, next) {
           title: 'Judul Berita',
           beritas: detailProduct,
           komentars: komentarsss,
-          moment : moment
+          moment : moment,
+          username: username
         });
       }else{
           res.status(404).send({
@@ -122,12 +128,14 @@ router.get('/deleteberita/:id', function (req, res, next) {
 });
 // setting dashboard
 router.get('/dashboard/',auth, function (req, res, next) {
+  username = req.session.username;
   Beritas.findAll()
   .then(beritas => {
     res.render('dashboard', 
     {
       title: 'Dashboard Berita',
-      beritas: beritas
+      beritas: beritas,
+      username: username
     });
   })
   .catch(err=> {
@@ -140,13 +148,16 @@ router.get('/dashboard/',auth, function (req, res, next) {
 });
 // go to page addberita
 router.get('/dashboard/addberita', function (req, res, next) {
+  
+  username = req.session.username;
   res.render('addberita', {
-    title: 'Posting Berita Baru'
+    title: 'Posting Berita Baru', username: username
   });
 });
 // Post berita baru
 router.post('/dashboard/addberita', kirim.array('image', 1), function (req, res, next) {
   let image = req.files[0].filename;
+  
   
   let berita = {
     judul: req.body.judul,
@@ -193,12 +204,14 @@ router.get('/deleteberita/:id', function (req, res, next) {
 // go to page Edit berita
 router.get('/dashboard/editberita/:id', function (req, res, next) {
   const id = req.params.id;
+  username = req.session.username;
   Beritas.findByPk(id)
   .then(berita => {
       if(berita){
         res.render('editberita', {
           title: 'Update Berita',
-          beritas: berita
+          beritas: berita,
+          username : username
         });
       }else{
           res.status(404).send({
@@ -263,14 +276,66 @@ router.get('/dashboard/deleteberita/:id', function (req, res, next) {
 
 });
 
-router.get('/register', function(req, res, next) {
-  res.render('register', { title: 'Register User' });
+router.get('/register',notauth, function(req, res, next) {
+  username = req.session.username;
+  res.render('register', { title: 'Register User', username: username});
 })
 
 
 
 // create Products
-router.post('/register', function(req, res, next) {
+router.post('/register',notauth,[
+  check('nama')
+  .isLength({min:1}).withMessage('Nama harus diisi.'),
+  check('email').custom(async (valueEmail) => {
+
+    // Mencari nama yang sama di query
+    const Email = await Users.findAll({where:{email:valueEmail}});
+    const duplikat = Email.email;
+
+    if (!duplikat) {
+        throw new Error(`${valueEmail} sudah terdaftar! `);
+
+    }
+
+    return true;
+})
+  .isLength({min:6}).withMessage('Email harus diisi.')
+  .isEmail(),
+  body('username').custom(async (valueUsername) => {
+
+    // Mencari nama yang sama di query
+    const username = await Users.findAll({where:{username:valueUsername}});
+    console.log(username);
+    const duplikat = username.username;
+
+    if (!duplikat) {
+        throw new Error(`${valueUsername} sudah terdaftar! `);
+
+    }
+
+    return true;
+})
+.isLength({min:1}).withMessage('Username harus diisi.'),
+  check('password')
+  .isLength({min:1}).withMessage('Password harus diisi.'),
+
+  
+
+  
+
+], function(req, res, next) {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    res.render('register', 
+    { title: 'Register User',
+     errors: errors.array(),
+     username: username,
+     data: req.body,
+    
+    });
+  }else {
+    
   let passwordHash = bcrypt.hashSync(req.body.password,10);
   let user = {
        nama: req.body.nama,
@@ -280,6 +345,7 @@ router.post('/register', function(req, res, next) {
   }
   Users.create(user)
   .then(data => {
+     //res.flash('msg', 'Berhasil Melakukan Registrasi Silakan Lakukan login');
      res.redirect('/login');
   })
   .catch(err => {
@@ -287,17 +353,22 @@ router.post('/register', function(req, res, next) {
           info:"Error",
           message: err.message
       });
-  })
+  });
 
+}
+  
 });
 
 /* GET users listing. */
-router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Login User' });
+router.get('/login',notauth, function(req, res, next) {
+  username = req.session.username;
+  res.render('login', { title: 'Login User', username: username,  
+  msg: req.flash('msg') 
+});
 });
 
 // create Products
-router.post('/login', function(req, res, next) {
+router.post('/login',notauth, function(req, res, next) {
 
   Users.findOne({ where: { username: req.body.username } })
   .then(data => {
@@ -306,8 +377,8 @@ router.post('/login', function(req, res, next) {
     
       if(loginValid){
         	// simpan session
-				req.session.username = req.body.username;
-				req.session.islogin = true;
+			req.session.username = req.body.username;
+			req.session.islogin = true;
       res.redirect('/dashboard');
       }else {
         res.redirect('/login');

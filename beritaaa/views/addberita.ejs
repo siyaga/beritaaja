@@ -14,17 +14,15 @@
             required
           />
         </div>
-        <div class="mb-3">
-          <label for="author" class="form-label">Nama Penulis Berita</label>
           <input
-            type="text"
+            type="hidden"
             name="author"
             class="form-control"
             id="author"
+            value="<%= username %> "
             placeholder="Author"
             required
           />
-        </div>
         <div class="mb-3">
           <label for="image" class="form-label">Image</label>
           <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="image" name="image" required>

@@ -97,15 +97,28 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/dashboard">dashboard</a>
-              </li>
+              <% if (username) { %> 
+                <li class="nav-item">
+                  <a class="nav-link" href="/dashboard">dashboard</a>
+                </li>
+                <% } else { %>
+
+              <% } %> 
+              
             </ul>
+            <% if (username) { %> 
             <form class="d-flex" role="search">
-              <a href="/login" class="btn btn-outline-success">
-                Login
+              <a href="/logout" class="btn btn-outline-danger">
+                Logout
               </a>
             </form>
+            <% } else { %>
+              <form class="d-flex" role="search">
+                <a href="/login" class="btn btn-outline-primary">
+                  Login
+                </a>
+              </form>
+              <% } %>  
           </div>
         </div>
       </nav>

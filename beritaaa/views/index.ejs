@@ -12,13 +12,10 @@
             <h5 class="card-title"><%=item.judul %></h5>
             <p>
               <small class="text-muted">
-                  Penulis : <%=item.author %></p></small>
-            <p class="card-text" style="
-            display:inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 40ch;"><%=item.artikel %></p>
+                  Penulis : <%=item.author %>  </p></small>
+                  <small class="text-muted"><%= moment(item.createdAt).format('yyyy-MM-DD,HH:mm') %></small>
+            
+            <br>
             <br>
             <a href="/berita/<%= item.id %> " class="btn btn-primary">Read More</a>
           </div>

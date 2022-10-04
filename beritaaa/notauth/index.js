@@ -1,17 +1,18 @@
 
-const auth = function(req, res, next){
+const notauth = function(req, res, next){
     
     console.log(req.session.username)
 	if(req.session && req.session.islogin) {
 		// sudah login
 		// tambahin logic
 
-		return next();
+		return res.redirect('/');
 	}else {
 		// belum login
-		return res.redirect('/login');
+        
+		return next();
 	}
 };
 
 
-module.exports = auth;
+module.exports = notauth;

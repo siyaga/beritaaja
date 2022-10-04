@@ -4,28 +4,37 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var flash = require('connect-flash');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var beritaRouter = require('./routes/berita');
 
 var app = express();
+app.set('trust proxy', 1)
 app.use(session({
   secret: '12345',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { 
+    secure: false, // This will only work if you have https enabled!
+  maxAge: 60*60*1000 // 1 min
+ }
 }))
 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(flash());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 const db = require('./models');
 db.sequelize.sync()
 .then(()=> {
@@ -34,6 +43,7 @@ db.sequelize.sync()
 .catch((err)=> {
     console.log("error: "+ err.message);
 })
+app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

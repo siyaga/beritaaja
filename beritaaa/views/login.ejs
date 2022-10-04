@@ -2,6 +2,11 @@
     <div class="container">
       <h1><%= title %></h1>
       <br />
+      <% if (msg.length !== 0) { %>
+        <div class="alert alert-success" role="alert">
+            <%= msg %>
+        </div>
+        <% } %>
       <form method="POST" action="/login">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
