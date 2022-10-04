@@ -155,7 +155,26 @@ router.get('/dashboard/addberita', function (req, res, next) {
   });
 });
 // Post berita baru
-router.post('/dashboard/addberita', kirim.array('image', 1), function (req, res, next) {
+router.post('/dashboard/addberita',auth, kirim.array('image', 1),[
+  check('judul')
+  .notEmpty().withMessage('Judul harus diisi.'),
+  check('artikel')
+  .notEmpty().withMessage('Artikel harus diisi.')
+  
+
+], function (req, res, next) {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    res.render('addberita', 
+    { 
+      title: 'Posting Berita Baru',
+     errors: errors.array(),
+     username : username,
+     data : req.body
+    
+    });
+  }else {
+
   let image = req.files[0].filename;
   
   
@@ -175,6 +194,7 @@ router.post('/dashboard/addberita', kirim.array('image', 1), function (req, res,
         message: err.message
       })
     });
+  };
 });
 router.get('/deleteberita/:id', function (req, res, next) {
   const id = req.params.id;
@@ -202,7 +222,7 @@ router.get('/deleteberita/:id', function (req, res, next) {
 });
 
 // go to page Edit berita
-router.get('/dashboard/editberita/:id', function (req, res, next) {
+router.get('/dashboard/editberita/:id',auth, function (req, res, next) {
   const id = req.params.id;
   username = req.session.username;
   Beritas.findByPk(id)
@@ -227,7 +247,26 @@ router.get('/dashboard/editberita/:id', function (req, res, next) {
   });
 });
 // Post Edit berita
-router.post('/dashboard/editberita/:id', kirim.array('image', 1), function (req, res, next) {
+router.post('/dashboard/editberita/:id',auth, kirim.array('image', 1),
+[
+  check('judul')
+  .notEmpty().withMessage('Judul harus diisi.'),
+  check('artikel')
+  .notEmpty().withMessage('Artikel harus diisi.')
+  
+
+], function (req, res, next) {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    res.render('editberita', 
+    { 
+      title: 'Update Berita',
+     errors: errors.array(),
+     username : username,
+    
+    });
+  }else {
+  
   const id = req.params.id;
   let image = req.files[0].filename;
   let berita = {
@@ -247,7 +286,8 @@ router.post('/dashboard/editberita/:id', kirim.array('image', 1), function (req,
           info:"Error",
           message: err.message
       });
-  })
+  });
+  }
 });
 
 // delete Berita
@@ -286,39 +326,38 @@ router.get('/register',notauth, function(req, res, next) {
 // create Products
 router.post('/register',notauth,[
   check('nama')
-  .isLength({min:1}).withMessage('Nama harus diisi.'),
-  check('email').custom(async (valueEmail) => {
+  .notEmpty().withMessage('Nama harus diisi.'),
+  body('email').custom(async (valueEmail, ) => {
 
     // Mencari nama yang sama di query
-    const Email = await Users.findAll({where:{email:valueEmail}});
-    const duplikat = Email.email;
-
-    if (!duplikat) {
-        throw new Error(`${valueEmail} sudah terdaftar! `);
+    
+    const Email = await Users.findOne({email:{email:valueEmail}});
+    if (Email.email === valueEmail) {
+        throw new Error(`Email ${valueEmail} sudah terdaftar! `);
 
     }
 
     return true;
 })
-  .isLength({min:6}).withMessage('Email harus diisi.')
-  .isEmail(),
+  .notEmpty().withMessage('Email harus diisi.')
+  .isEmail().withMessage('Email tidak valid.'),
   body('username').custom(async (valueUsername) => {
-
     // Mencari nama yang sama di query
-    const username = await Users.findAll({where:{username:valueUsername}});
-    console.log(username);
-    const duplikat = username.username;
+    const username = await Users.findOne({where:{username:valueUsername}});
 
-    if (!duplikat) {
-        throw new Error(`${valueUsername} sudah terdaftar! `);
+
+    if (username === valueUsername) {
+        throw new Error(`Username ${valueUsername} sudah terdaftar! `);
 
     }
 
     return true;
 })
-.isLength({min:1}).withMessage('Username harus diisi.'),
+.notEmpty().withMessage('Username harus diisi.')
+.isLength({max:20}).withMessage('Username maximal Harus 20 karakter.'),
   check('password')
-  .isLength({min:1}).withMessage('Password harus diisi.'),
+  .notEmpty().withMessage('Password harus diisi.')
+  .isLength({min:6}).withMessage('password minimal Harus 6 karakter.'),
 
   
 
@@ -381,7 +420,11 @@ router.post('/login',notauth, function(req, res, next) {
 			req.session.islogin = true;
       res.redirect('/dashboard');
       }else {
-        res.redirect('/login');
+        res.render('login', 
+        {title: 'Login User', 
+        //message: "Username dan password incorrect",
+        username: username,  
+        msg: req.flash('msg') });
       }
 
     }else {

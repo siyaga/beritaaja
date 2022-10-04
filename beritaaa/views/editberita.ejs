@@ -2,6 +2,16 @@
 <div class="container">
   <h1><%= title %></h1>
   <br />
+  <% if (typeof errors != 'undefined') { %>
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            <% errors.forEach(error => { %>
+            <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    </div>
+    <% } %>
+  <br />
   <form
     method="POST"
     action="/dashboard/editberita/<%= beritas.id %>"
@@ -17,21 +27,17 @@
         id="judul"
         placeholder="Judul Berita"
         value="<%= beritas.judul %>"
-        required
+        
       />
     </div>
-    <div class="mb-3">
-      <label for="author" class="form-label">Nama Penulis Berita</label>
-      <input
-        type="text"
+   <input
+        type="hidden"
         name="author"
         class="form-control"
         id="author"
         placeholder="Author"
         value="<%= beritas.author %>"
-        required
       />
-    </div>
     <div class="mb-3">
       <label for="image" class="form-label">Image</label>
       <input
@@ -41,6 +47,7 @@
         id="image"
         name="image"
         value="<%= beritas.image %>"
+        required
 
       />
     </div>
@@ -51,10 +58,7 @@
         class="form-control"
         id="artikel"
         placeholder="Artikel"
-        required
-      >
-<%= beritas.artikel %> </textarea
-      >
+      ><%= beritas.artikel %></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

@@ -2,6 +2,18 @@
     <div class="container">
       <h1><%= title %></h1>
       <br />
+      <% if (typeof errors != 'undefined') { %>
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+                <% }) %>
+            </ul>
+        </div>
+        <% } %>
+      <br />
+      <% let isiData; %>
+      <% if(locals.data) {isiData = data} %>
       <form method="POST" action="/dashboard/addberita" class="mt-4" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="judul" class="form-label">Judul Berita</label>
@@ -10,8 +22,8 @@
             name="judul"
             class="form-control"
             id="judul"
+            value="<%= isiData?.judul %>"
             placeholder="Judul Berita"
-            required
           />
         </div>
           <input
@@ -19,7 +31,7 @@
             name="author"
             class="form-control"
             id="author"
-            value="<%= username %> "
+            value="<%= username %>"
             placeholder="Author"
             required
           />
@@ -34,8 +46,7 @@
               class="form-control"
               id="artikel"
               placeholder="Artikel"
-              required
-            ></textarea>
+            ><%= isiData?.artikel %></textarea>
           </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
