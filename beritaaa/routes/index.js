@@ -3,6 +3,8 @@ var router = express.Router();
 const multer = require('multer');
 var bcrypt = require('bcrypt');
 const auth = require('../auth');
+const moment = require('moment');
+
 
 
 
@@ -43,17 +45,22 @@ router.get('/', function (req, res, next) {
   });
   
 });
+
 // find berita
-router.get('/berita/:id', function (req, res, next) {
+router.get('/berita/:id',async function (req, res, next) {
   const id = req.params.id;
-  Beritas.findByPk(id)
-  .then( async detailProduct => {
+  const komentarsss = await Komentars.findAll({where:{idberita:id}});
+  komentarsss.forEach(function (komen){
+    console.log(komen.idberita);
+  })
+  await Beritas.findByPk(id)
+  .then( detailProduct => {
       if(detailProduct){
         res.render('berita', {
           title: 'Judul Berita',
-          beritas: await detailProduct,
-          komentars: 
-          Komentars.findAll({where:{idberita:id}})
+          beritas: detailProduct,
+          komentars: komentarsss,
+          moment : moment
         });
       }else{
           res.status(404).send({
@@ -113,7 +120,6 @@ router.get('/deleteberita/:id', function (req, res, next) {
   })
 
 });
-
 // setting dashboard
 router.get('/dashboard/',auth, function (req, res, next) {
   Beritas.findAll()
@@ -297,10 +303,11 @@ router.post('/login', function(req, res, next) {
   .then(data => {
     if(data){
       var loginValid = bcrypt.compareSync(req.body.password, data.password);
-      console.log(loginValid);
+    
       if(loginValid){
-        req.session.username = req.body.username;
-        req.session.islogin = true;
+        	// simpan session
+				req.session.username = req.body.username;
+				req.session.islogin = true;
       res.redirect('/dashboard');
       }else {
         res.redirect('/login');

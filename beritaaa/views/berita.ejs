@@ -22,28 +22,28 @@
                         <h6 class="card-subtitle">Latest Comments section by users</h6>
                     </div>
                     <%// for(const comment of comments){%>
-                    <%= //for (const komentars of komentar){ %>     
+                    <% komentars.forEach(function(komen){ %>     
                     <div class="comment-widgets m-b-20 ">
                         <div class="d-flex flex-row comment-row">
                             <div class="p-2"><span class="round"><img src="../images/default.png" alt="user" width="50"></span>
                             </div>
                             <div class="comment-text w-100">
-                                <h5><%=// comment.username %><%=// komentar.username %>ADi </h5>
+                                <h5><%= komen.username %></h5>
                                 <div class="comment-footer">
-                                    <span class="date">20 Desember 2022<%=// moment(comment.date).format('yyyy-MM-DD') %>,
-                                        <%//= moment(comment.time).format('HH:MM') %></span>
+                                    <span class="date"><%= moment(komen.createdAt).format('yyyy-MM-DD, HH:MM') %></span>
                                    
                                   
                                 </div>
                                 
-                                <p class="m-b-5 m-t-10"><%=// komentar.komentar %>test  <%=// comment.comment %></p>
+                                <p class="m-b-5 m-t-10 mt-1"><%= komen.komentar %></p>
                             </div>
                         </div>
-                    <%=// } %> 
+                   
                     
                     
 
                 </div>
+                <% }); %> 
                     
             </div>
 

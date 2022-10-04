@@ -1,8 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
     const Komentar = sequelize.define("komentar", {
-        idberita: {
-            type: Sequelize.INTEGER
-        },
         username: {
             type: Sequelize.STRING
         },
