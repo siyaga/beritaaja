@@ -297,11 +297,11 @@ router.post('/register', notauth, [
     // Mencari nama yang sama di query
 
     const Email = await Users.findOne({
-      email: {
+      where: {
         email: valueEmail
       }
     });
-    if (Email.email === valueEmail) {
+    if (Email) {
       throw new Error(`Email ${valueEmail} sudah terdaftar! `);
 
     }
@@ -319,7 +319,7 @@ router.post('/register', notauth, [
     });
 
 
-    if (username === valueUsername) {
+    if (username) {
       throw new Error(`Username ${valueUsername} sudah terdaftar! `);
 
     }
