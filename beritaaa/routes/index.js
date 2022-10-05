@@ -11,9 +11,6 @@ const {
   validationResult
 } = require('express-validator');
 
-
-
-
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, '././public/images');
@@ -25,7 +22,7 @@ const fileStorage = multer.diskStorage({
 
 const kirim = multer({
   storage: fileStorage
-})
+});
 
 const db = require('../models');
 const {
@@ -381,6 +378,7 @@ router.post('/register', notauth, [
 /* GET users listing. */
 router.get('/login', notauth, function (req, res, next) {
   username = req.session.username;
+  
   res.render('login', {
     title: 'Login User',
     username: username,
@@ -388,12 +386,54 @@ router.get('/login', notauth, function (req, res, next) {
   });
 });
 
-// create Products
-router.post('/login', notauth, [
-  check('username').notEmpty().withMessage('Username harus diisi.'),
-  check('password').notEmpty().withMessage('Password harus diisi')
-], function (req, res, next) {
+// // create Products
+// router.post('/login', notauth, async function (req, res, next) {
+//   username = req.session.username;
+//   const musername = req.body.username;
+//   const mpassword = req.body.password;
 
+//   const errors = [];
+//   if(musername === undefined){
+//     errors.push({message: "Harap Isi Username"})
+//   }
+//   if(mpassword === undefined){
+//     errors.push({message: "Harap Isi Username"})
+//   }
+//   if (errors.length > 0) {
+//        res.render('login', {
+//             errors,
+//             title: 'Login User',
+//             username: username,
+//             msg: req.flash('msg')
+//     });
+//   }else {
+//   const checkusername = await Users.findOne({where:{username:req.body.username}});
+//   if(checkusername){
+//     var loginValid = bcrypt.compareSync(req.body.password, checkusername.password);
+
+//     if (loginValid) {
+//       req.session.username = req.body.username;
+//       req.session.islogin = true;
+//       res.redirect('/dashboard');
+//     }else {
+//       errors.push({message: "Username dan Password Salah"});
+//        res.render('login', {
+//             errors,
+//             title: 'Login User',
+//             username: username,
+//             msg: req.flash('msg')
+//     });
+      
+//     }
+//   }
+// }
+
+// });
+
+// // create Products
+router.post('/login', notauth,function (req, res, next) {
+  username = req.session.username;
+  
   Users.findOne({
       where: {
         username: req.body.username
@@ -409,8 +449,14 @@ router.post('/login', notauth, [
           req.session.islogin = true;
           res.redirect('/dashboard');
         } else {
-
-          res.redirect('/login');
+          let message = 'Username tidak boleh kosong'
+    return res.render('login', {
+      
+      title: 'Login User',
+      username: username,
+      message: message,
+      msg: req.flash('msg')
+      });
         }
 
       } else {
