@@ -288,7 +288,7 @@ router.get('/register', notauth, function (req, res, next) {
 
 
 
-// create Products
+// create Berita
 router.post('/register', notauth, [
   check('nama')
   .notEmpty().withMessage('Nama harus diisi.'),
@@ -386,7 +386,7 @@ router.get('/login', notauth, function (req, res, next) {
   });
 });
 
-// // create Products
+// // create Berita
 // router.post('/login', notauth, async function (req, res, next) {
 //   username = req.session.username;
 //   const musername = req.body.username;
@@ -430,7 +430,7 @@ router.get('/login', notauth, function (req, res, next) {
 
 // });
 
-// // create Products
+// // create Berita
 router.post('/login', notauth,function (req, res, next) {
   username = req.session.username;
   
@@ -470,7 +470,7 @@ router.post('/login', notauth,function (req, res, next) {
 
 });
 
-/* GET users listing. */
+/* logout user. */
 router.get('/logout', function (req, res, next) {
   req.session.destroy();
   res.redirect('/login');
