@@ -1,6 +1,9 @@
 <%- include('templates/header')-%>
 <h1 class="mb-3 text-center"><%= title %> </h1>
 <div class="row">
+  <% if (beritas.length < 1 ) { %>
+    <div class="p-3 mb-2 bg-warning text-dark">Berita  Tidak ada</div>
+    <% } else {%>
   <% beritas.forEach(function(item){ %> 
   <div class="col-md-4 mb-3">
       <div class="card">
@@ -12,12 +15,12 @@
             <h5 class="card-title"><%=item.judul %></h5>
             <p>
               <small class="text-muted">
-                  Penulis : <%=item.author %>  </p></small>
+                  <%=item.author %>  </p></small>
                   <small class="text-muted"><%= moment(item.createdAt).format('yyyy-MM-DD,HH:mm') %></small>
             
             <br>
             <br>
-            <a href="/berita/<%= item.id %> " class="btn btn-primary">Read More</a>
+            <a href="/berita/<%= item.id %>" class="btn btn-primary">Read More</a>
           </div>
 
        
@@ -25,5 +28,6 @@
   </div>
   
   <% }); %> 
+  <% } %> 
 </div>
 <%- include('templates/footer')-%>

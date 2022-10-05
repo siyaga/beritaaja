@@ -5,8 +5,9 @@
             <div class="card p-4">
 
             <h2 class="mb-3"><%= beritas.judul %> </h2>
-    
-            <p>Penulis : <%= beritas.author %> </a></p>
+            <p class="font-weight-bold text-center"><%= beritas.author %> - Berita </a></p>
+            <small class="font-weight-light text-center"><%= moment(beritas.createdAt).format('dddd, yyyy-MM-DD, HH:mm') %></small>
+            </br>
             <div style="max-height:350px; overflow:hidden;">
                 <img class="img-fluid " src="../images/<%= beritas.image %>" alt="<%=beritas.judul %>" >
  
@@ -17,7 +18,7 @@
             </article>
 
             
-            <a href="/" class="d-block mt-3">Back to berita</a>
+            <a href="/" class="btn btn-warning">Lihat Berita Lain</a>
            </div>
             <div class="card mt-3 ">
                 

@@ -13,6 +13,9 @@
           </tr>
         </thead>
         <tbody>
+          <% if (beritas.length < 1 ) { %>
+            <div class="p-3 mb-2 bg-warning text-dark">Berita Data Tidak ada</div>
+            <% } else {%>
           <% let i = 1;  %> 
           <% beritas.forEach(function(item){ %> 
           <tr>
@@ -38,7 +41,8 @@
               &nbsp;<a href="/dashboard/deleteberita/<%= item.id%>" class="btn btn-outline-danger" onclick="return confirm('yakin Anda Menghapus <%= item.judul %>?')">delete</a>
             </td>
           </tr>
-         <% }); %> 
+         <% }); %>
+         <% } %>  
         </tbody>
       </table>
 <%- include('templates/footer')-%>
